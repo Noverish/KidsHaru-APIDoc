@@ -32,6 +32,29 @@
 
   <body>
     <div id="swagger-ui"></div>
-    <p>fuck you</p>
+
+    <script src="./swagger-ui-bundle.js"> </script>
+    <script src="./swagger-ui-standalone-preset.js"> </script>
+    <script>
+    window.onload = function() {
+
+      // Build a system
+      const ui = SwaggerUIBundle({
+        url: "https://raw.githubusercontent.com/KidsHaru/KidsHaru-APIDoc/master/kidsharu.yaml",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout"
+      })
+
+      window.ui = ui
+    }
+  </script>
   </body>
 </html>
