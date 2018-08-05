@@ -16,31 +16,90 @@ basePath: "/v1"
 tags:
 - name: "auth"
   description: "로그인과 회원가입"
-- name: "children"
-  description: "교사의 원아 관리 및 학부모의 자녀 관리"
 - name: "teacher"
   description: "Operations about teacher"
-- name: "parent"
-  description: "Operations about parent"
 
 
 paths:
-  /auth:
-    get:
+
+  /users/teachers:
+    post:
       tags:
       - "auth"
-      summary: "로그인"
+      summary: "교사 회원가입"
       parameters: 
-      - name: "id"
-        in: "query"
-        description: "아이디"
+      - name: "body"
+        in: "body"
         required: true
-        type: string
-      - name: "password"
-        in: "query"
-        description: "SHA256로 해쉬된 64자 문자"
+        schema:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions-parameters/id"
+            password:
+              $ref: "#/definitions-parameters/password"
+            name:
+              type: string
+              example: "홍길동"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/LoginResult"
+        400:
+          $ref: "#/definitions-response/InsufficientParameters"
+        409:
+          $ref: "#/definitions-response/AlreadyExistID"
+        500:
+          $ref: "#/definitions-response/InternalServerError"
+
+  /users/parents:
+    post:
+      tags:
+      - "auth"
+      summary: "학부모 회원가입"
+      parameters: 
+      - name: "body"
+        in: "body"
         required: true
-        type: string
+        schema:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions-parameters/id"
+            password:
+              $ref: "#/definitions-parameters/password"
+            invite_code:
+              type: string
+              example: "q1w2e3"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/LoginResult"
+        400:
+          $ref: "#/definitions-response/InsufficientParameters"
+        409:
+          $ref: "#/definitions-response/AlreadyExistID"
+        500:
+          $ref: "#/definitions-response/InternalServerError"
+          
+  /users/teachers/auth:
+    post:
+      tags:
+      - "auth"
+      summary: "교사 로그인"
+      parameters: 
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions-parameters/id"
+            password:
+              $ref: "#/definitions-parameters/password"
       responses:
         200:
           description: "Success"
@@ -58,12 +117,12 @@ paths:
                 example: "Invalid password"
         500:
           $ref: "#/definitions-response/InternalServerError"
-
-  /auth/teacher:
+          
+  /users/parents/auth:
     post:
       tags:
       - "auth"
-      summary: "교사 회원가입"
+      summary: "학부모 로그인"
       parameters: 
       - name: "body"
         in: "body"
@@ -72,15 +131,9 @@ paths:
           type: object
           properties:
             id:
-              type: string
-              example: "example"
+              $ref: "#/definitions-parameters/id"
             password:
-              type: string
-              example: "03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4"
-              description: "SHA256 Hashed Password"
-            name:
-              type: string
-              example: "홍길동"
+              $ref: "#/definitions-parameters/password"
       responses:
         200:
           description: "Success"
@@ -88,46 +141,18 @@ paths:
             $ref: "#/definitions/LoginResult"
         400:
           $ref: "#/definitions-response/InsufficientParameters"
-        409:
-          $ref: "#/definitions-response/AlreadyExistID"
-        500:
-          $ref: "#/definitions-response/InternalServerError"
-
-  /auth/parent:
-    post:
-      tags:
-      - "auth"
-      summary: "학부모 회원가입"
-      parameters: 
-      - name: "body"
-        in: "body"
-        required: true
-        schema:
-          type: object
-          properties:
-            id:
-              type: string
-              example: "example"
-            password:
-              type: string
-              example: "03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4"
-              description: "SHA256 Hashed Password"
-            invite_code:
-              type: string
-              example: "q1w2e3"
-      responses:
-        200:
-          description: "Success"
+        404:
+          description: "아이디 또는 비밀번호가 틀렸을 경우"
           schema:
-            $ref: "#/definitions/LoginResult"
-        400:
-          $ref: "#/definitions-response/InsufficientParameters"
-        409:
-          $ref: "#/definitions-response/AlreadyExistID"
+            type: object
+            properties:
+              msg:
+                type: string
+                example: "Invalid password"
         500:
           $ref: "#/definitions-response/InternalServerError"
           
-  /teacher/children:
+  /teachers/children:
     get:
       tags:
       - "teacher"
@@ -166,7 +191,7 @@ paths:
         500:
           $ref: "#/definitions-response/InternalServerError"
           
-  /teacher/children/{child_id}:
+  /teachers/children/{child_id}:
     get:
       tags:
       - "teacher"
@@ -222,6 +247,14 @@ paths:
 
 
 definitions-parameters:
+  id:
+    type: string
+    example: "example"
+  password:
+    type: string
+    example: "03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4"
+    description: "SHA256 Hashed Password"
+  
   ChildId:
     name: "child_id"
     in: "path"
