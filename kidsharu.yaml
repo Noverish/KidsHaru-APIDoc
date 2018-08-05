@@ -16,148 +16,99 @@ basePath: "/v1"
 tags:
 - name: "auth"
   description: "로그인과 회원가입"
-- name: "teacher"
-  description: "Operations about teacher"
+- name: "teacher-child"
+  description: "교사의 원아 조회, 생성, 수정, 삭제"
+- name: "teacher-album"
+  description: "교사의 앨범 조회, 생성, 수정, 삭제"
 
 
 paths:
 
-  /users/teachers:
+  # auth
+  /teachers:
     post:
       tags:
       - "auth"
       summary: "교사 회원가입"
       parameters: 
-      - name: "body"
-        in: "body"
-        required: true
-        schema:
-          type: object
-          properties:
-            id:
-              $ref: "#/definitions-parameters/id"
-            password:
-              $ref: "#/definitions-parameters/password"
-            name:
-              type: string
-              example: "홍길동"
+      - $ref: "#/def-req-body/register_teacher"
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         409:
-          $ref: "#/definitions-response/AlreadyExistID"
+          $ref: "#/def-res/AlreadyExistID"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
 
-  /users/parents:
+  /parents:
     post:
       tags:
       - "auth"
       summary: "학부모 회원가입"
       parameters: 
-      - name: "body"
-        in: "body"
-        required: true
-        schema:
-          type: object
-          properties:
-            id:
-              $ref: "#/definitions-parameters/id"
-            password:
-              $ref: "#/definitions-parameters/password"
-            invite_code:
-              type: string
-              example: "q1w2e3"
+      - $ref: "#/def-req-body/register_parent"
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         409:
-          $ref: "#/definitions-response/AlreadyExistID"
+          $ref: "#/def-res/AlreadyExistID"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
           
-  /users/teachers/auth:
+  /teachers/auth:
     post:
       tags:
       - "auth"
       summary: "교사 로그인"
       parameters: 
-      - name: "body"
-        in: "body"
-        required: true
-        schema:
-          type: object
-          properties:
-            id:
-              $ref: "#/definitions-parameters/id"
-            password:
-              $ref: "#/definitions-parameters/password"
+      - $ref: "#/def-req-body/login"
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         404:
-          description: "아이디 또는 비밀번호가 틀렸을 경우"
-          schema:
-            type: object
-            properties:
-              msg:
-                type: string
-                example: "Invalid password"
+          $ref: "#/def-res/IDorPasswordWrong"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
           
-  /users/parents/auth:
+  /parents/auth:
     post:
       tags:
       - "auth"
       summary: "학부모 로그인"
       parameters: 
-      - name: "body"
-        in: "body"
-        required: true
-        schema:
-          type: object
-          properties:
-            id:
-              $ref: "#/definitions-parameters/id"
-            password:
-              $ref: "#/definitions-parameters/password"
+      - $ref: "#/def-req-body/login"
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         404:
-          description: "아이디 또는 비밀번호가 틀렸을 경우"
-          schema:
-            type: object
-            properties:
-              msg:
-                type: string
-                example: "Invalid password"
+          $ref: "#/def-res/IDorPasswordWrong"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
           
-  /teachers/children:
+  # teacher-child
+  /teachers/{teacher_id}/children:
     get:
       tags:
-      - "teacher"
+      - "teacher-children"
       summary: "교사의 원아 리스트"
-      parameters: []
+      parameters:
+      - $ref: "#/def-req-path/teacher_id"
       responses:
         200:
           description: "Success"
@@ -166,120 +117,245 @@ paths:
             items:
               $ref: "#/definitions/Child"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
     post:
       tags:
-      - "teacher"
+      - "teacher-children"
       summary: "교사의 원아 추가"
       parameters: 
-      - name: "body"
-        in: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/ChildWithoutId"
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-body/child"
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/Child"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         409:
-          $ref: "#/definitions-response/AlreadyExist"
+          $ref: "#/def-res/AlreadyExist"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
           
-  /teachers/children/{child_id}:
+  /teachers/{teacher_id}/children/{child_id}:
     get:
       tags:
-      - "teacher"
+      - "teacher-children"
       summary: "교사의 원아 정보"
       parameters: 
-      - $ref: "#/definitions-parameters/ChildId"
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-path/child_id"
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/Child"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         404:
-          $ref: "#/definitions-response/NotExists"
+          $ref: "#/def-res/NotExists"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
     put:
       tags:
-      - "teacher"
-      summary: "교사의 원아 삭제"
+      - "teacher-children"
+      summary: "교사의 원아 수정"
       parameters: 
-      - $ref: "#/definitions-parameters/ChildId"
-      - in: "body"
-        name: "body"
-        required: true
-        schema:
-          $ref: "#/definitions/ChildWithoutId"
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-path/child_id"
+      - $ref: "#/def-req-body/Child"
       responses:
         204:
           description: "Success"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         404:
-          $ref: "#/definitions-response/NotExists"
+          $ref: "#/def-res/NotExists"
         500:
-          $ref: "#/definitions-response/InternalServerError"
+          $ref: "#/def-res/InternalServerError"
     delete:
       tags:
-      - "teacher"
+      - "teacher-children"
       summary: "교사의 원아 삭제"
       parameters: 
-      - $ref: "#/definitions-parameters/ChildId"
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-path/child_id"
       responses:
         204:
           description: "Success"
         400:
-          $ref: "#/definitions-response/InsufficientParameters"
+          $ref: "#/def-res/InsufficientParameters"
         404:
-          $ref: "#/definitions-response/NotExists"
+          $ref: "#/def-res/NotExists"
         500:
-          $ref: "#/definitions-response/InternalServerError"
-
-
-definitions-parameters:
-  id:
-    type: string
-    example: "example"
-  password:
-    type: string
-    example: "03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4"
-    description: "SHA256 Hashed Password"
+          $ref: "#/def-res/InternalServerError"
   
-  ChildId:
-    name: "child_id"
-    in: "path"
-    description: "삭제하려는 원아의 child_id"
+  # teacher-album
+  /teachers/{teacher_id}/albums:
+    get:
+      tags:
+      - "teacher-album"
+      summary: "교사의 앨범 리스트"
+      parameters:
+      - $ref: "#/def-req-path/teacher_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    post:
+      tags:
+      - "teacher-album"
+      summary: "교사의 앨범 추가"
+      parameters: 
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-body/Album"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        409:
+          $ref: "#/def-res/AlreadyExist"
+        500:
+          $ref: "#/def-res/InternalServerError"
+          
+  /teachers/{teacher_id}/albums/{album_id}:
+    get:
+      tags:
+      - "teacher-album"
+      summary: "교사의 앨범 정보"
+      parameters: 
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-path/album_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    put:
+      tags:
+      - "teacher-album"
+      summary: "교사의 앨범 수정"
+      parameters: 
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-body/Album"
+      responses:
+        204:
+          description: "Success"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    delete:
+      tags:
+      - "teacher-album"
+      summary: "교사의 앨범 삭제"
+      parameters: 
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-path/album_id"
+      responses:
+        204:
+          description: "Success"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
+# def-req-path =====================================================================
+def-req-path:
+  teacher_id:
+    name: "teacher_id"
+    in: path
+    description: "teacher_id"
     required: true
     type: integer
+  child_id:
+      name: "child_id"
+      in: "path"
+      description: "child_id"
+      required: true
+      type: integer
 
-
-definitions-response:
-  InternalServerError:
-    description: "예상치 못한 서버 에러가 발생한 경우"
+# def-req-body =====================================================================
+def-req-body:
+  RegisterTeacher:
+    name: "body"
+    in: "body"
+    required: true
     schema:
       type: object
       properties:
-        msg:
-          type: string
-          example: "~~"
-  InsufficientParameters:
-    description: "클라이언트에서 보내준 데이터에서 빠진 부분이 있는 경우"
+        id:
+          $ref: "#/def-property/id"
+        password:
+          $ref: "#/def-property/password"
+        name:
+          $ref: "#/def-property/name"
+  RegisterParent:
+    name: "body"
+    in: "body"
+    required: true
     schema:
       type: object
       properties:
-        msg:
-          type: string
-          example: "There is no [field name]"
+        id:
+          $ref: "#/def-property/id"
+        password:
+          $ref: "#/def-property/password"
+        invite_code:
+          $ref: "#/def-property/invite_code"
+  Login:
+    name: "body"
+    in: "body"
+    required: true
+    schema:
+      type: object
+      properties:
+        id:
+          $ref: "#/def-property/id"
+        password:
+          $ref: "#/def-property/password"
+  Child:
+    in: "body"
+    name: "body"
+    required: true
+    schema:
+      type: object
+      properties:
+        name:
+          $ref: "#/def-property/name"
+        contact:
+          $ref: "#/def-property/contact"
+  Album:
+    type: object
+    properties:
+      title:
+          $ref: "#/def-property/album_title"
+  
+# def-res ======================================================================
+def-res:
   AlreadyExistID:
     description: "이미 존재하는 아이디로 회원가입 하려는 경우"
     schema:
@@ -288,6 +364,22 @@ definitions-response:
         msg:
           type: string
           example: "Already Exist ID"
+  IDorPasswordWrong:
+    description: "아이디 또는 비밀번호가 틀렸을 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Invalid password"
+  InsufficientParameters:
+    description: "클라이언트에서 보내준 데이터에서 빠진 부분이 있는 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "There is no [field name]"
   AlreadyExist:
     description: "이미 존재하는 경우"
     schema:
@@ -304,33 +396,69 @@ definitions-response:
         msg:
           type: string
           example: "Not Exists"
+  InternalServerError:
+    description: "예상치 못한 서버 에러가 발생한 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "~~"
 
 
+# definitions ====================================================================
 definitions:
   LoginResult:
     type: object
     properties:
       access_token:
-        type: string
-        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+          $ref: "#/def-property/access_token"
   Child:
     type: object
     properties:
       child_id:
-        type: integer
-        example: 1
+          $ref: "#/def-property/child_id"
       name:
-        type: string
-        example: "박철수"
+          $ref: "#/def-property/name"
       contact:
-        type: string
-        example: "010-1234-1234"
-  ChildWithoutId:
+          $ref: "#/def-property/contact"
+  Album:
     type: object
     properties:
-      name:
-        type: string
-        example: "박철수"
-      contact:
-        type: string
-        example: "010-1234-1234"
+      album_id:
+          $ref: "#/def-property/album_id"
+      title:
+          $ref: "#/def-property/album_title"
+
+# def-property ====================================================================
+def-property:
+  id:
+    type: string
+    example: "example"
+  password:
+    type: string
+    example: "03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4"
+    description: "SHA256 Hashed Password"
+  invite_code:
+    type: string
+    example: "q1w2e3"
+  access_token:
+    type: string
+    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+
+  child_id:
+    type: int
+    example: 1
+  name:
+    type: string
+    example: "박철수"
+  contact:
+    type: string
+    example: "010-1234-1234"
+
+  album_id:
+    type: int
+    example: 1
+  album_title:
+    type: string
+    example: "7월 15일 안전 체험관 견학"
