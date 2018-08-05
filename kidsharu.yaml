@@ -313,9 +313,6 @@ definitions:
       access_token:
         type: string
         example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-      is_teacher:
-        type: "boolean"
-        example: true
   Child:
     type: object
     properties:
