@@ -16,10 +16,14 @@ basePath: "/v1"
 tags:
 - name: "auth"
   description: "로그인과 회원가입"
-- name: "teacher-child"
-  description: "교사의 원아 조회, 생성, 수정, 삭제"
-- name: "teacher-album"
-  description: "교사의 앨범 조회, 생성, 수정, 삭제"
+- name: "teacher"
+  description: "교사의 원아, 앨범"
+- name: "child"
+  description: "원아 조회, 수정, 삭제"
+- name: "album"
+  description: "앨범 조회, 수정, 삭제"
+- name: "image"
+  description: "이미지의 원아 얼굴 정보 조회 및 수정"
 
 
 paths:
@@ -105,7 +109,7 @@ paths:
   /teachers/{teacher_id}/children:
     get:
       tags:
-      - "teacher-children"
+      - "teacher"
       summary: "교사의 원아 리스트"
       parameters:
       - $ref: "#/def-req-path/teacher_id"
@@ -122,7 +126,7 @@ paths:
           $ref: "#/def-res/InternalServerError"
     post:
       tags:
-      - "teacher-children"
+      - "teacher"
       summary: "교사의 원아 추가"
       parameters: 
       - $ref: "#/def-req-path/teacher_id"
@@ -139,13 +143,12 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
           
-  /teachers/{teacher_id}/children/{child_id}:
+  /children/{child_id}:
     get:
       tags:
-      - "teacher-children"
-      summary: "교사의 원아 정보"
+      - "child"
+      summary: "원아의 자세한 정보"
       parameters: 
-      - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-path/child_id"
       responses:
         200:
@@ -160,12 +163,12 @@ paths:
           $ref: "#/def-res/InternalServerError"
     put:
       tags:
-      - "teacher-children"
-      summary: "교사의 원아 수정"
+      - "child"
+      summary: "원아의 정보 수정"
       parameters: 
       - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-path/child_id"
-      - $ref: "#/def-req-body/Child"
+      - $ref: "#/def-req-body/child"
       responses:
         204:
           description: "Success"
@@ -177,8 +180,8 @@ paths:
           $ref: "#/def-res/InternalServerError"
     delete:
       tags:
-      - "teacher-children"
-      summary: "교사의 원아 삭제"
+      - "child"
+      summary: "원아 삭제"
       parameters: 
       - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-path/child_id"
@@ -196,7 +199,7 @@ paths:
   /teachers/{teacher_id}/albums:
     get:
       tags:
-      - "teacher-album"
+      - "teacher"
       summary: "교사의 앨범 리스트"
       parameters:
       - $ref: "#/def-req-path/teacher_id"
@@ -206,18 +209,18 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Album"
+              $ref: "#/definitions/AlbumPreview"
         400:
           $ref: "#/def-res/InsufficientParameters"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
       tags:
-      - "teacher-album"
+      - "teacher"
       summary: "교사의 앨범 추가"
       parameters: 
       - $ref: "#/def-req-path/teacher_id"
-      - $ref: "#/def-req-body/Album"
+      - $ref: "#/def-req-body/album"
       responses:
         200:
           description: "Success"
@@ -230,13 +233,12 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
           
-  /teachers/{teacher_id}/albums/{album_id}:
+  /albums/{album_id}:
     get:
       tags:
-      - "teacher-album"
-      summary: "교사의 앨범 정보"
+      - "album"
+      summary: "앨범의 자세한 정보"
       parameters: 
-      - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-path/album_id"
       responses:
         200:
@@ -251,12 +253,11 @@ paths:
           $ref: "#/def-res/InternalServerError"
     put:
       tags:
-      - "teacher-album"
-      summary: "교사의 앨범 수정"
+      - "album"
+      summary: "앨범의 정보 수정"
       parameters: 
-      - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-path/album_id"
-      - $ref: "#/def-req-body/Album"
+      - $ref: "#/def-req-body/album"
       responses:
         204:
           description: "Success"
@@ -268,10 +269,9 @@ paths:
           $ref: "#/def-res/InternalServerError"
     delete:
       tags:
-      - "teacher-album"
-      summary: "교사의 앨범 삭제"
+      - "album"
+      summary: "앨범 삭제"
       parameters: 
-      - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-path/album_id"
       responses:
         204:
@@ -283,6 +283,42 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
+  # image
+  /images/{image_id}:
+    get:
+      tags:
+      - "image"
+      summary: "이미지의 URL 및 원아 얼굴 정보"
+      parameters: 
+      - $ref: "#/def-req-path/image_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Image"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    put:
+      tags:
+      - "image"
+      summary: "이미지의 원아 얼굴 정보 수정"
+      parameters: 
+      - $ref: "#/def-req-path/image_id"
+      - $ref: "#/def-req-body/face"
+      responses:
+        204:
+          description: "Success"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+  
 # def-req-path =====================================================================
 def-req-path:
   teacher_id:
@@ -297,10 +333,22 @@ def-req-path:
       description: "child_id"
       required: true
       type: integer
+  album_id:
+      name: "album_id"
+      in: "path"
+      description: "album_id"
+      required: true
+      type: integer
+  image_id:
+      name: "image_id"
+      in: "path"
+      description: "image_id"
+      required: true
+      type: string
 
 # def-req-body =====================================================================
 def-req-body:
-  RegisterTeacher:
+  register_teacher:
     name: "body"
     in: "body"
     required: true
@@ -313,7 +361,7 @@ def-req-body:
           $ref: "#/def-property/password"
         name:
           $ref: "#/def-property/name"
-  RegisterParent:
+  register_parent:
     name: "body"
     in: "body"
     required: true
@@ -326,7 +374,7 @@ def-req-body:
           $ref: "#/def-property/password"
         invite_code:
           $ref: "#/def-property/invite_code"
-  Login:
+  login:
     name: "body"
     in: "body"
     required: true
@@ -337,7 +385,7 @@ def-req-body:
           $ref: "#/def-property/id"
         password:
           $ref: "#/def-property/password"
-  Child:
+  child:
     in: "body"
     name: "body"
     required: true
@@ -348,63 +396,21 @@ def-req-body:
           $ref: "#/def-property/name"
         contact:
           $ref: "#/def-property/contact"
-  Album:
-    type: object
-    properties:
-      title:
+  album:
+    name: "body"
+    in: "body"
+    required: true
+    schema:
+      type: object
+      properties:
+        title:
           $ref: "#/def-property/album_title"
-  
-# def-res ======================================================================
-def-res:
-  AlreadyExistID:
-    description: "이미 존재하는 아이디로 회원가입 하려는 경우"
+  face:
+    name: "body"
+    in: "body"
+    required: true
     schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "Already Exist ID"
-  IDorPasswordWrong:
-    description: "아이디 또는 비밀번호가 틀렸을 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "Invalid password"
-  InsufficientParameters:
-    description: "클라이언트에서 보내준 데이터에서 빠진 부분이 있는 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "There is no [field name]"
-  AlreadyExist:
-    description: "이미 존재하는 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "Already Exist"
-  NotExists:
-    description: "존재 하지 않는 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "Not Exists"
-  InternalServerError:
-    description: "예상치 못한 서버 에러가 발생한 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "~~"
-
+      $ref: "#/definitions/Face"
 
 # definitions ====================================================================
 definitions:
@@ -412,23 +418,69 @@ definitions:
     type: object
     properties:
       access_token:
-          $ref: "#/def-property/access_token"
+        $ref: "#/def-property/access_token"
   Child:
     type: object
     properties:
       child_id:
-          $ref: "#/def-property/child_id"
+        $ref: "#/def-property/child_id"
       name:
-          $ref: "#/def-property/name"
+        $ref: "#/def-property/name"
       contact:
-          $ref: "#/def-property/contact"
+        $ref: "#/def-property/contact"
+  AlbumPreview:
+    type: object
+    properties:
+      album_id:
+        $ref: "#/def-property/album_id"
+      title:
+        $ref: "#/def-property/album_title"
+      cover_img:
+        $ref: "#/def-property/image_url"
   Album:
     type: object
     properties:
       album_id:
-          $ref: "#/def-property/album_id"
+        $ref: "#/def-property/album_id"
       title:
-          $ref: "#/def-property/album_title"
+        $ref: "#/def-property/album_title"
+      cover_img:
+        $ref: "#/def-property/image_url"
+      images:
+        type: array
+        items:
+          type: object
+          properties:
+            image_id:
+              $ref: "#/def-property/image_id"
+            image_url:
+              $ref: "#/def-property/image_url"
+  Image:
+    type: object
+    properties:
+      image_id:
+        $ref: "#/def-property/image_id"
+      image_url:
+        $ref: "#/def-property/image_url"
+      faces:
+        type: array
+        items:
+          $ref: "#/definitions/Face"
+  Face:
+    type: object
+    properties:
+      child_id:
+        $ref: "#/def-property/child_id"
+      child_name:
+        $ref: "#/def-property/name"
+      rect_x:
+        $ref: "#/def-property/rect_x"
+      rect_y:
+        $ref: "#/def-property/rect_y"
+      rect_width:
+        $ref: "#/def-property/rect_width"
+      rect_height:
+        $ref: "#/def-property/rect_height"
 
 # def-property ====================================================================
 def-property:
@@ -462,3 +514,79 @@ def-property:
   album_title:
     type: string
     example: "7월 15일 안전 체험관 견학"
+  
+  image_id:
+    type: int
+    example: 1
+  image_url:
+    type: string
+    example: "https://example.com/asdf.jpg"
+    
+  rect_x:
+    type: int
+    example: 24
+    description: "단위: pixel"
+  rect_y:
+    type: int
+    example: 34
+    description: "단위: pixel"
+  rect_width:
+    type: int
+    example: 125
+    description: "단위: pixel"
+  rect_height:
+    type: int
+    example: 146
+    description: "단위: pixel"
+
+
+# def-res ======================================================================
+def-res:
+  AlreadyExistID:
+    description: "이미 존재하는 아이디로 회원가입 하려는 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Already Exist ID"
+  IDorPasswordWrong:
+    description: "아이디 또는 비밀번호가 틀렸을 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Invalid password"
+  InsufficientParameters:
+    description: "클라이언트에서 보내준 데이터에서 빠진 부분이 있는 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "There is no [field name] in parameters"
+  AlreadyExist:
+    description: "이미 존재하는 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Already Exist"
+  NotExists:
+    description: "존재 하지 않는 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "There is no [field name] which is [field value] in database"
+  InternalServerError:
+    description: "예상치 못한 서버 에러가 발생한 경우"
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "~~"
