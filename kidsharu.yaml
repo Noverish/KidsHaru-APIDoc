@@ -22,8 +22,8 @@ tags:
   description: "원아 조회, 수정, 삭제"
 - name: "album"
   description: "앨범 조회, 수정, 삭제"
-- name: "image"
-  description: "이미지의 원아 얼굴 정보 조회 및 수정"
+- name: "picture"
+  description: "사진의 원아 얼굴 정보 조회 및 수정"
 
 
 paths:
@@ -283,19 +283,20 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
-  # image
-  /images/{image_id}:
+  # picture
+  /albums/{album_id}/pictures/{picture_id}:
     get:
       tags:
-      - "image"
-      summary: "이미지의 URL 및 원아 얼굴 정보"
+      - "picture"
+      summary: "사진의 URL 및 원아 얼굴 정보"
       parameters: 
-      - $ref: "#/def-req-path/image_id"
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
       responses:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/Image"
+            $ref: "#/definitions/Picture"
         400:
           $ref: "#/def-res/InsufficientParameters"
         404:
@@ -304,10 +305,11 @@ paths:
           $ref: "#/def-res/InternalServerError"
     put:
       tags:
-      - "image"
-      summary: "이미지의 원아 얼굴 정보 수정"
+      - "picture"
+      summary: "사진의 원아 얼굴 정보 수정"
       parameters: 
-      - $ref: "#/def-req-path/image_id"
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
       - $ref: "#/def-req-body/face"
       responses:
         204:
@@ -339,10 +341,10 @@ def-req-path:
       description: "album_id"
       required: true
       type: integer
-  image_id:
-      name: "image_id"
+  picture_id:
+      name: "picture_id"
       in: "path"
-      description: "image_id"
+      description: "picture_id"
       required: true
       type: string
 
@@ -436,7 +438,7 @@ definitions:
       title:
         $ref: "#/def-property/album_title"
       cover_img:
-        $ref: "#/def-property/image_url"
+        $ref: "#/def-property/picture_url"
   Album:
     type: object
     properties:
@@ -445,23 +447,25 @@ definitions:
       title:
         $ref: "#/def-property/album_title"
       cover_img:
-        $ref: "#/def-property/image_url"
-      images:
+        $ref: "#/def-property/picture_url"
+      pictures:
         type: array
         items:
           type: object
           properties:
-            image_id:
-              $ref: "#/def-property/image_id"
-            image_url:
-              $ref: "#/def-property/image_url"
-  Image:
+            picture_id:
+              $ref: "#/def-property/picture_id"
+            picture_url:
+              $ref: "#/def-property/picture_url"
+  Picture:
     type: object
     properties:
-      image_id:
-        $ref: "#/def-property/image_id"
-      image_url:
-        $ref: "#/def-property/image_url"
+      album_id:
+        $ref: "#/def-property/album_id"
+      picture_id:
+        $ref: "#/def-property/picture_id"
+      picture_url:
+        $ref: "#/def-property/picture_url"
       faces:
         type: array
         items:
@@ -469,6 +473,10 @@ definitions:
   Face:
     type: object
     properties:
+      album_id:
+        $ref: "#/def-property/album_id"
+      picture_id:
+        $ref: "#/def-property/picture_id"
       child_id:
         $ref: "#/def-property/child_id"
       child_name:
@@ -515,10 +523,10 @@ def-property:
     type: string
     example: "7월 15일 안전 체험관 견학"
   
-  image_id:
+  picture_id:
     type: int
     example: 1
-  image_url:
+  picture_url:
     type: string
     example: "https://example.com/asdf.jpg"
     
