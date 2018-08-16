@@ -16,14 +16,14 @@ basePath: "/v1"
 tags:
 - name: "auth"
   description: "로그인과 회원가입"
-- name: "teacher"
-  description: "교사의 원아, 앨범"
 - name: "child"
-  description: "원아 조회, 수정, 삭제"
+  description: "원아 추가, 조회, 수정, 삭제"
 - name: "album"
-  description: "앨범 조회, 수정, 삭제"
+  description: "앨범 추가, 조회, 수정, 삭제"
 - name: "picture"
-  description: "사진의 원아 얼굴 정보 조회 및 수정"
+  description: "사진 추가, 조회, 수정, 삭제"
+- name: "face"
+  description: "원아 얼굴 추가, 조회, 수정, 삭제"
 
 
 paths:
@@ -105,12 +105,12 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
-  # teacher
+  # child
   /teachers/{teacher_id}/children:
     get:
       tags:
-      - "teacher"
-      summary: "교사의 원아 리스트"
+      - "child"
+      summary: "교사의 원아 정보 리스트"
       parameters:
       - $ref: "#/def-req-path/teacher_id"
       responses:
@@ -126,8 +126,8 @@ paths:
           $ref: "#/def-res/InternalServerError"
     post:
       tags:
-      - "teacher"
-      summary: "교사의 원아 추가"
+      - "child"
+      summary: "교사에 원아 정보 추가"
       parameters:
       - $ref: "#/def-req-path/teacher_id"
       - $ref: "#/def-req-body/child"
@@ -143,49 +143,11 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
-  /teachers/{teacher_id}/albums:
-    get:
-      tags:
-      - "teacher"
-      summary: "교사의 앨범 리스트"
-      parameters:
-      - $ref: "#/def-req-path/teacher_id"
-      responses:
-        200:
-          description: "Success"
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/AlbumPreview"
-        400:
-          $ref: "#/def-res/InsufficientParameters"
-        500:
-          $ref: "#/def-res/InternalServerError"
-    post:
-      tags:
-      - "teacher"
-      summary: "교사의 앨범 추가"
-      parameters:
-      - $ref: "#/def-req-path/teacher_id"
-      - $ref: "#/def-req-body/album"
-      responses:
-        200:
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Album"
-        400:
-          $ref: "#/def-res/InsufficientParameters"
-        409:
-          $ref: "#/def-res/AlreadyExist"
-        500:
-          $ref: "#/def-res/InternalServerError"
-
-  # child
   /children/{child_id}:
     get:
       tags:
       - "child"
-      summary: "원아의 자세한 정보"
+      summary: "원아 정보 조회"
       parameters:
       - $ref: "#/def-req-path/child_id"
       responses:
@@ -202,7 +164,7 @@ paths:
     put:
       tags:
       - "child"
-      summary: "원아의 정보 수정"
+      summary: "원아 정보 수정"
       parameters:
       - $ref: "#/def-req-path/child_id"
       - $ref: "#/def-req-body/child"
@@ -218,7 +180,7 @@ paths:
     delete:
       tags:
       - "child"
-      summary: "원아 삭제"
+      summary: "원아 정보 삭제"
       parameters:
       - $ref: "#/def-req-path/child_id"
       responses:
@@ -232,11 +194,48 @@ paths:
           $ref: "#/def-res/InternalServerError"
 
   # album
+  /teachers/{teacher_id}/albums:
+    get:
+      tags:
+      - "album"
+      summary: "교사의 앨범 정보 리스트"
+      parameters:
+      - $ref: "#/def-req-path/teacher_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    post:
+      tags:
+      - "album"
+      summary: "교사에 앨범 정보 추가"
+      parameters:
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-body/album"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        409:
+          $ref: "#/def-res/AlreadyExist"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
   /albums/{album_id}:
     get:
       tags:
       - "album"
-      summary: "앨범의 자세한 정보"
+      summary: "앨범 정보 조회"
       parameters:
       - $ref: "#/def-req-path/album_id"
       responses:
@@ -253,7 +252,7 @@ paths:
     put:
       tags:
       - "album"
-      summary: "앨범의 정보 수정"
+      summary: "앨범 정보 수정"
       parameters:
       - $ref: "#/def-req-path/album_id"
       - $ref: "#/def-req-body/album"
@@ -269,7 +268,7 @@ paths:
     delete:
       tags:
       - "album"
-      summary: "앨범 삭제"
+      summary: "앨범 정보 삭제"
       parameters:
       - $ref: "#/def-req-path/album_id"
       responses:
@@ -283,11 +282,50 @@ paths:
           $ref: "#/def-res/InternalServerError"
 
   # picture
+  /albums/{album_id}/pictures:
+    get:
+      tags:
+      - "picture"
+      summary: "앨범의 사진 정보 리스트"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Picture"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    post:
+      tags:
+      - "picture"
+      summary: "앨범에 사진 정보 추가"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-body/picture"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Picture"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
   /albums/{album_id}/pictures/{picture_id}:
     get:
       tags:
       - "picture"
-      summary: "사진의 URL 및 원아 얼굴 정보"
+      summary: "사진 정보 조회"
       parameters:
       - $ref: "#/def-req-path/album_id"
       - $ref: "#/def-req-path/picture_id"
@@ -305,11 +343,125 @@ paths:
     put:
       tags:
       - "picture"
-      summary: "사진의 원아 얼굴 정보 수정"
+      summary: "사진 정보 수정"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
+      - $ref: "#/def-req-body/picture"
+      responses:
+        204:
+          description: "Success"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    delete:
+      tags:
+      - "picture"
+      summary: "사진 정보 삭제"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
+      responses:
+        204:
+          description: "Success"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
+  # face
+  /albums/{album_id}/pictures/{picture_id}/children:
+    get:
+      tags:
+      - "face"
+      summary: "사진의 얼굴 정보 리스트"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Face"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    post:
+      tags:
+      - "face"
+      summary: "사진에 얼굴 정보 추가"
       parameters:
       - $ref: "#/def-req-path/album_id"
       - $ref: "#/def-req-path/picture_id"
       - $ref: "#/def-req-body/face"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Face"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
+  /albums/{album_id}/pictures/{picture_id}/children/{child_id}:
+    get:
+      tags:
+      - "face"
+      summary: "얼굴 정보 조회"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
+      - $ref: "#/def-req-path/child_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Face"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    put:
+      tags:
+      - "face"
+      summary: "얼굴 정보 수정"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
+      - $ref: "#/def-req-path/child_id"
+      - $ref: "#/def-req-body/face"
+      responses:
+        204:
+          description: "Success"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    delete:
+      tags:
+      - "face"
+      summary: "얼굴 정보 삭제"
+      parameters:
+      - $ref: "#/def-req-path/album_id"
+      - $ref: "#/def-req-path/picture_id"
+      - $ref: "#/def-req-path/child_id"
       responses:
         204:
           description: "Success"
@@ -408,12 +560,32 @@ def-req-body:
           $ref: "#/def-property/album_title"
         content:
           $ref: "#/def-property/album_content"
+  picture:
+    name: "body"
+    in: "body"
+    required: true
+    schema:
+      type: object
+      properties:
+        file_name:
+          $ref: "#/def-property/file_name"
   face:
     name: "body"
     in: "body"
     required: true
     schema:
-      $ref: "#/definitions/Face"
+      type: object
+      properties:
+        child_id:
+          $ref: "#/def-property/child_id"
+        rect_x:
+          $ref: "#/def-property/rect_x"
+        rect_y:
+          $ref: "#/def-property/rect_y"
+        rect_width:
+          $ref: "#/def-property/rect_width"
+        rect_height:
+          $ref: "#/def-property/rect_height"
 
 # definitions ====================================================================
 definitions:
@@ -431,17 +603,6 @@ definitions:
         $ref: "#/def-property/name"
       contact:
         $ref: "#/def-property/contact"
-  AlbumPreview:
-    type: object
-    properties:
-      album_id:
-        $ref: "#/def-property/album_id"
-      title:
-        $ref: "#/def-property/album_title"
-      content:
-        $ref: "#/def-property/album_content"
-      cover_img:
-        $ref: "#/def-property/picture_url"
   Album:
     type: object
     properties:
@@ -453,19 +614,6 @@ definitions:
         $ref: "#/def-property/album_content"
       cover_img:
         $ref: "#/def-property/picture_url"
-      pictures:
-        type: array
-        items:
-          $ref: "#/definitions/PicturePreview"
-  PicturePreview:
-    type: object
-    properties:
-      album_id:
-        $ref: "#/def-property/album_id"
-      picture_id:
-        $ref: "#/def-property/picture_id"
-      picture_url:
-        $ref: "#/def-property/picture_url"
   Picture:
     type: object
     properties:
@@ -475,10 +623,6 @@ definitions:
         $ref: "#/def-property/picture_id"
       picture_url:
         $ref: "#/def-property/picture_url"
-      faces:
-        type: array
-        items:
-          $ref: "#/definitions/Face"
   Face:
     type: object
     properties:
@@ -541,6 +685,9 @@ def-property:
   picture_url:
     type: string
     example: "https://example.com/asdf.jpg"
+  file_name:
+    type: string
+    example: "1234.jpg"
 
   rect_x:
     type: int
