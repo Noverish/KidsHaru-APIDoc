@@ -105,7 +105,7 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
-  # teacher-child
+  # teacher
   /teachers/{teacher_id}/children:
     get:
       tags:
@@ -143,6 +143,44 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
+  /teachers/{teacher_id}/albums:
+    get:
+      tags:
+      - "teacher"
+      summary: "교사의 앨범 리스트"
+      parameters:
+      - $ref: "#/def-req-path/teacher_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/AlbumPreview"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        500:
+          $ref: "#/def-res/InternalServerError"
+    post:
+      tags:
+      - "teacher"
+      summary: "교사의 앨범 추가"
+      parameters:
+      - $ref: "#/def-req-path/teacher_id"
+      - $ref: "#/def-req-body/album"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/InsufficientParameters"
+        409:
+          $ref: "#/def-res/AlreadyExist"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
+  # child
   /children/{child_id}:
     get:
       tags:
@@ -193,44 +231,7 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
-  # teacher-album
-  /teachers/{teacher_id}/albums:
-    get:
-      tags:
-      - "teacher"
-      summary: "교사의 앨범 리스트"
-      parameters:
-      - $ref: "#/def-req-path/teacher_id"
-      responses:
-        200:
-          description: "Success"
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/AlbumPreview"
-        400:
-          $ref: "#/def-res/InsufficientParameters"
-        500:
-          $ref: "#/def-res/InternalServerError"
-    post:
-      tags:
-      - "teacher"
-      summary: "교사의 앨범 추가"
-      parameters:
-      - $ref: "#/def-req-path/teacher_id"
-      - $ref: "#/def-req-body/album"
-      responses:
-        200:
-          description: "Success"
-          schema:
-            $ref: "#/definitions/Album"
-        400:
-          $ref: "#/def-res/InsufficientParameters"
-        409:
-          $ref: "#/def-res/AlreadyExist"
-        500:
-          $ref: "#/def-res/InternalServerError"
-
+  # album
   /albums/{album_id}:
     get:
       tags:
@@ -328,23 +329,23 @@ def-req-path:
     required: true
     type: integer
   child_id:
-      name: "child_id"
-      in: "path"
-      description: "child_id"
-      required: true
-      type: integer
+    name: "child_id"
+    in: "path"
+    description: "child_id"
+    required: true
+    type: integer
   album_id:
-      name: "album_id"
-      in: "path"
-      description: "album_id"
-      required: true
-      type: integer
+    name: "album_id"
+    in: "path"
+    description: "album_id"
+    required: true
+    type: integer
   picture_id:
-      name: "picture_id"
-      in: "path"
-      description: "picture_id"
-      required: true
-      type: string
+    name: "picture_id"
+    in: "path"
+    description: "picture_id"
+    required: true
+    type: string
 
 # def-req-body =====================================================================
 def-req-body:
@@ -455,12 +456,16 @@ definitions:
       pictures:
         type: array
         items:
-          type: object
-          properties:
-            picture_id:
-              $ref: "#/def-property/picture_id"
-            picture_url:
-              $ref: "#/def-property/picture_url"
+          $ref: "#/definitions/PicturePreview"
+  PicturePreview:
+    type: object
+    properties:
+      album_id:
+        $ref: "#/def-property/album_id"
+      picture_id:
+        $ref: "#/def-property/picture_id"
+      picture_url:
+        $ref: "#/def-property/picture_url"
   Picture:
     type: object
     properties:
