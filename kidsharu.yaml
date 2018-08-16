@@ -405,6 +405,8 @@ def-req-body:
       properties:
         title:
           $ref: "#/def-property/album_title"
+        content:
+          $ref: "#/def-property/album_content"
   face:
     name: "body"
     in: "body"
@@ -435,6 +437,8 @@ definitions:
         $ref: "#/def-property/album_id"
       title:
         $ref: "#/def-property/album_title"
+      content:
+        $ref: "#/def-property/album_content"
       cover_img:
         $ref: "#/def-property/picture_url"
   Album:
@@ -444,6 +448,8 @@ definitions:
         $ref: "#/def-property/album_id"
       title:
         $ref: "#/def-property/album_title"
+      content:
+        $ref: "#/def-property/album_content"
       cover_img:
         $ref: "#/def-property/picture_url"
       pictures:
@@ -520,6 +526,9 @@ def-property:
   album_title:
     type: string
     example: "7월 15일 안전 체험관 견학"
+  album_content:
+    type: string
+    example: "우리 햇님반 어린이들과 안전 체험관 견학을 갔다왔어요~~"
 
   picture_id:
     type: int
