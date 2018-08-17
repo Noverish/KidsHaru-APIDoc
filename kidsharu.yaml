@@ -122,6 +122,8 @@ paths:
               $ref: "#/definitions/Child"
         400:
           $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
@@ -138,6 +140,8 @@ paths:
             $ref: "#/definitions/Child"
         400:
           $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
         409:
           $ref: "#/def-res/AlreadyExist"
         500:
@@ -210,6 +214,8 @@ paths:
               $ref: "#/definitions/Album"
         400:
           $ref: "#/def-res/InsufficientParameters"
+        404:
+          $ref: "#/def-res/NotExists"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
@@ -226,8 +232,8 @@ paths:
             $ref: "#/definitions/Album"
         400:
           $ref: "#/def-res/InsufficientParameters"
-        409:
-          $ref: "#/def-res/AlreadyExist"
+        404:
+          $ref: "#/def-res/NotExists"
         500:
           $ref: "#/def-res/InternalServerError"
 
