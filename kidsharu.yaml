@@ -42,9 +42,9 @@ paths:
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         409:
-          $ref: "#/def-res/AlreadyExistID"
+          $ref: "#/def-res/Conflict"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -61,9 +61,9 @@ paths:
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         409:
-          $ref: "#/def-res/AlreadyExistID"
+          $ref: "#/def-res/Conflict"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -80,9 +80,9 @@ paths:
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/IDorPasswordWrong"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -99,9 +99,9 @@ paths:
           schema:
             $ref: "#/definitions/LoginResult"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/IDorPasswordWrong"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -121,9 +121,9 @@ paths:
             items:
               $ref: "#/definitions/Child"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
@@ -139,11 +139,11 @@ paths:
           schema:
             $ref: "#/definitions/Child"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         409:
-          $ref: "#/def-res/AlreadyExist"
+          $ref: "#/def-res/Conflict"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -160,9 +160,9 @@ paths:
           schema:
             $ref: "#/definitions/Child"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     put:
@@ -176,9 +176,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     delete:
@@ -191,9 +191,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -213,9 +213,9 @@ paths:
             items:
               $ref: "#/definitions/Album"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
@@ -231,9 +231,9 @@ paths:
           schema:
             $ref: "#/definitions/Album"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -250,9 +250,9 @@ paths:
           schema:
             $ref: "#/definitions/Album"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     put:
@@ -266,9 +266,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     delete:
@@ -281,9 +281,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -303,9 +303,9 @@ paths:
             items:
               $ref: "#/definitions/Picture"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
@@ -321,9 +321,9 @@ paths:
           schema:
             $ref: "#/definitions/Picture"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -341,9 +341,9 @@ paths:
           schema:
             $ref: "#/definitions/Picture"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     put:
@@ -358,9 +358,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     delete:
@@ -374,9 +374,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -397,9 +397,9 @@ paths:
             items:
               $ref: "#/definitions/Face"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     post:
@@ -416,9 +416,11 @@ paths:
           schema:
             $ref: "#/definitions/Face"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
+        409:
+          $ref: "#/def-res/Conflict"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -437,9 +439,9 @@ paths:
           schema:
             $ref: "#/definitions/Face"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
     put:
@@ -455,9 +457,11 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
+        409:
+          $ref: "#/def-res/Conflict"
         500:
           $ref: "#/def-res/InternalServerError"
     delete:
@@ -472,9 +476,9 @@ paths:
         204:
           description: "Success"
         400:
-          $ref: "#/def-res/InsufficientParameters"
+          $ref: "#/def-res/BadRequest"
         404:
-          $ref: "#/def-res/NotExists"
+          $ref: "#/def-res/NotFound"
         500:
           $ref: "#/def-res/InternalServerError"
 
@@ -715,23 +719,7 @@ def-property:
 
 # def-res ======================================================================
 def-res:
-  AlreadyExistID:
-    description: "이미 존재하는 아이디로 회원가입 하려는 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "Already Exist ID"
-  IDorPasswordWrong:
-    description: "아이디 또는 비밀번호가 틀렸을 경우"
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-          example: "Invalid password"
-  InsufficientParameters:
+  BadRequest:
     description: "클라이언트에서 보내준 데이터에서 빠진 부분이 있는 경우"
     schema:
       type: object
@@ -739,22 +727,22 @@ def-res:
         msg:
           type: string
           example: "There is no [field name] in parameters"
-  AlreadyExist:
+  Conflict:
     description: "이미 존재하는 경우"
     schema:
       type: object
       properties:
         msg:
           type: string
-          example: "Already Exist"
-  NotExists:
+          example: "Conflict"
+  NotFound:
     description: "존재 하지 않는 경우"
     schema:
       type: object
       properties:
         msg:
           type: string
-          example: "There is no [field name] which is [field value] in database"
+          example: "Not Found"
   InternalServerError:
     description: "예상치 못한 서버 에러가 발생한 경우"
     schema:
@@ -762,4 +750,4 @@ def-res:
       properties:
         msg:
           type: string
-          example: "~~"
+          example: "Internal Server Error - ..."
