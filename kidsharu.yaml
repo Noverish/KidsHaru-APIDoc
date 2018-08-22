@@ -40,7 +40,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/LoginResult"
+            $ref: "#/definitions/TeacherLoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         409:
@@ -59,7 +59,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/LoginResult"
+            $ref: "#/definitions/ParentLoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         409:
@@ -78,7 +78,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/LoginResult"
+            $ref: "#/definitions/TeacherLoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         404:
@@ -97,7 +97,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/LoginResult"
+            $ref: "#/definitions/ParentLoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         404:
@@ -599,11 +599,20 @@ def-req-body:
 
 # definitions ====================================================================
 definitions:
-  LoginResult:
+  TeacherLoginResult:
     type: object
     properties:
       access_token:
         $ref: "#/def-property/access_token"
+      teacher_id:
+        $ref: "#/def-property/teacher_id"
+  ParentLoginResult:
+    type: object
+    properties:
+      access_token:
+        $ref: "#/def-property/access_token"
+      parent_id:
+        $ref: "#/def-property/parent_id"
   Child:
     type: object
     properties:
@@ -668,6 +677,12 @@ def-property:
   access_token:
     type: string
     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+  teacher_id:
+    type: string
+    example: 1
+  parent_id:
+    type: string
+    example: 1
 
   child_id:
     type: int
@@ -726,7 +741,7 @@ def-res:
       properties:
         msg:
           type: string
-          example: "There is no [field name] in parameters"
+          example: "There is no [field name]"
   Conflict:
     description: "이미 존재하는 경우"
     schema:
