@@ -627,12 +627,14 @@ definitions:
     properties:
       album_id:
         $ref: "#/def-property/album_id"
+      cover_img:
+        $ref: "#/def-property/picture_url"
       title:
         $ref: "#/def-property/album_title"
       content:
         $ref: "#/def-property/album_content"
-      cover_img:
-        $ref: "#/def-property/picture_url"
+      date:
+        $ref: "#/def-property/date"
   Picture:
     type: object
     properties:
@@ -703,6 +705,9 @@ def-property:
   album_content:
     type: string
     example: "우리 햇님반 어린이들과 안전 체험관 견학을 갔다왔어요~~"
+  date:
+    type: string
+    example: "1970-01-01 00:00:00"
 
   picture_id:
     type: int
