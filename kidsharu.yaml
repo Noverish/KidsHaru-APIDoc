@@ -395,6 +395,21 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
+  /pictures/processing:
+    get:
+      tags:
+      - "picture"
+      summary: "처리 중인 사진 정보 리스트"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Picture"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
   # face
   /albums/{album_id}/pictures/{picture_id}/children:
     get:
