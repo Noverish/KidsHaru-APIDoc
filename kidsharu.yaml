@@ -792,7 +792,7 @@ def-property:
     example: "1970-01-01 00:00:00"
   album_status:
     type: string
-    example: "upload/processing/checking/done"
+    example: "uploading/processing/checking/done"
 
   picture_id:
     type: int
