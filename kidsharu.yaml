@@ -147,6 +147,27 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
+  /parents/{parent_id}/children:
+    get:
+      tags:
+      - "child"
+      summary: "부모의 아이 정보 리스트"
+      parameters:
+      - $ref: "#/def-req-path/parent_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Child"
+        400:
+          $ref: "#/def-res/BadRequest"
+        404:
+          $ref: "#/def-res/NotFound"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
   /children/{child_id}:
     get:
       tags:
@@ -230,6 +251,27 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Album"
+        400:
+          $ref: "#/def-res/BadRequest"
+        404:
+          $ref: "#/def-res/NotFound"
+        500:
+          $ref: "#/def-res/InternalServerError"
+
+  /parents/{parent_id}/albums:
+    get:
+      tags:
+      - "album"
+      summary: "부모의 앨범 정보 리스트"
+      parameters:
+      - $ref: "#/def-req-path/parent_id"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Album"
         400:
           $ref: "#/def-res/BadRequest"
         404:
@@ -544,6 +586,12 @@ def-req-path:
     description: "teacher_id"
     required: true
     type: integer
+  parent_id:
+    name: "parent_id"
+    in: path
+    description: "parent_id"
+    required: true
+    type: integer
   child_id:
     name: "child_id"
     in: "path"
@@ -700,6 +748,8 @@ definitions:
         $ref: "#/def-property/name"
       contact:
         $ref: "#/def-property/contact"
+      profile_img_url:
+        $ref: "#/def-property/picture_url"
   Album:
     type: object
     properties:
