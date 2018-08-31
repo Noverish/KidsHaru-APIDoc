@@ -748,7 +748,7 @@ definitions:
         $ref: "#/def-property/name"
       contact:
         $ref: "#/def-property/contact"
-      profile_img_url:
+      profile_img:
         $ref: "#/def-property/picture_url"
   Album:
     type: object
