@@ -40,7 +40,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/TeacherRegisterResult"
+            $ref: "#/definitions/TeacherLoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         409:
@@ -59,7 +59,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/ParentRegisterResult"
+            $ref: "#/definitions/ParentLoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         409:
@@ -213,7 +213,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Album"
+              $ref: "#/definitions/AlbumWithPictureList"
         400:
           $ref: "#/def-res/BadRequest"
         404:
@@ -252,7 +252,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Album"
+              $ref: "#/definitions/AlbumWithPictureList"
         400:
           $ref: "#/def-res/BadRequest"
         404:
@@ -706,14 +706,14 @@ def-req-body:
 
 # definitions ====================================================================
 definitions:
-  TeacherRegisterResult:
+  TeacherLoginResult:
     type: object
     properties:
       access_token:
         $ref: "#/def-property/access_token"
       teacher_id:
         $ref: "#/def-property/teacher_id"
-  ParentRegisterResult:
+  ParentLoginResult:
     type: object
     properties:
       access_token:
@@ -759,6 +759,25 @@ definitions:
         $ref: "#/def-property/date"
       status:
         $ref: "#/def-property/album_status"
+  AlbumWithPictureList:
+    type: object
+    properties:
+      album_id:
+        $ref: "#/def-property/album_id"
+      cover_img:
+        $ref: "#/def-property/picture_url"
+      title:
+        $ref: "#/def-property/album_title"
+      content:
+        $ref: "#/def-property/album_content"
+      date:
+        $ref: "#/def-property/date"
+      status:
+        $ref: "#/def-property/album_status"
+      pictures:
+        type: array
+        items:
+          $ref: "#/def-property/picture_url"
   Picture:
     type: object
     properties:
