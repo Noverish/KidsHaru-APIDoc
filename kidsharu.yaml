@@ -40,7 +40,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/TeacherLoginResult"
+            $ref: "#/definitions/TeacherRegisterResult"
         400:
           $ref: "#/def-res/BadRequest"
         409:
@@ -59,7 +59,7 @@ paths:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/ParentLoginResult"
+            $ref: "#/definitions/ParentRegisterResult"
         400:
           $ref: "#/def-res/BadRequest"
         409:
@@ -67,37 +67,18 @@ paths:
         500:
           $ref: "#/def-res/InternalServerError"
 
-  /teachers/auth:
+  /auth:
     post:
       tags:
       - "auth"
-      summary: "교사 로그인"
+      summary: "통합 로그인"
       parameters:
       - $ref: "#/def-req-body/login"
       responses:
         200:
           description: "Success"
           schema:
-            $ref: "#/definitions/TeacherLoginResult"
-        400:
-          $ref: "#/def-res/BadRequest"
-        404:
-          $ref: "#/def-res/NotFound"
-        500:
-          $ref: "#/def-res/InternalServerError"
-
-  /parents/auth:
-    post:
-      tags:
-      - "auth"
-      summary: "학부모 로그인"
-      parameters:
-      - $ref: "#/def-req-body/login"
-      responses:
-        200:
-          description: "Success"
-          schema:
-            $ref: "#/definitions/ParentLoginResult"
+            $ref: "#/definitions/LoginResult"
         400:
           $ref: "#/def-res/BadRequest"
         404:
@@ -725,20 +706,33 @@ def-req-body:
 
 # definitions ====================================================================
 definitions:
-  TeacherLoginResult:
+  TeacherRegisterResult:
     type: object
     properties:
       access_token:
         $ref: "#/def-property/access_token"
       teacher_id:
         $ref: "#/def-property/teacher_id"
-  ParentLoginResult:
+  ParentRegisterResult:
     type: object
     properties:
       access_token:
         $ref: "#/def-property/access_token"
       parent_id:
         $ref: "#/def-property/parent_id"
+  LoginResult:
+    type: object
+    properties:
+      access_token:
+        $ref: "#/def-property/access_token"
+      parent_id:
+        type: integer
+        example: 1 (exist only user is parent)
+      teacher_id:
+        type: integer
+        example: 1 (exist only user is teacher)
+      is_teacher:
+        $ref: "#/def-property/is_teacher"
   Child:
     type: object
     properties:
@@ -817,6 +811,9 @@ def-property:
   parent_id:
     type: string
     example: 1
+  is_teacher:
+    type: boolean
+    example: true
 
   child_id:
     type: int
@@ -873,7 +870,6 @@ def-property:
     type: int
     example: 146
     description: "단위: pixel"
-
 
 # def-res ======================================================================
 def-res:
